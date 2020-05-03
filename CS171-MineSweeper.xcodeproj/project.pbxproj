@@ -34,6 +34,7 @@
 		8C74D568245BF4D40097BBAC /* RandomAI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RandomAI.hpp; sourceTree = "<group>"; };
 		8C74D569245BF4D40097BBAC /* World.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = World.cpp; sourceTree = "<group>"; };
 		8C74D56A245BF4D40097BBAC /* World.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = World.hpp; sourceTree = "<group>"; };
+		8C74D56E245CEFC10097BBAC /* documentation.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = documentation.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +75,7 @@
 				8C74D569245BF4D40097BBAC /* World.cpp */,
 				8C74D56A245BF4D40097BBAC /* World.hpp */,
 				8C74D55C245BF4870097BBAC /* main.cpp */,
+				8C74D56E245CEFC10097BBAC /* documentation.txt */,
 			);
 			path = "CS171-MineSweeper";
 			sourceTree = "<group>";

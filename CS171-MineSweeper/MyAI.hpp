@@ -26,34 +26,70 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <queue>
+#include <cstdlib>
 
 using namespace std;
 
+
+
 class MyAI : public Agent
 {
+typedef pair<int, int> position;
+    
 public:
     MyAI ( int _rowDimension, int _colDimension, int _totalMines, int _agentX, int _agentY );
 
     Action getAction ( int number ) override;
 
-
-    // ======================================================================
-    // YOUR CODE BEGINS
-    // ======================================================================
 private:
-    struct Tile{
-        bool mine       = false; // the tile has Bomb or not
+    class Tile{
+    public:
+        int x = 0;
+        int y = 0;
         bool uncovered  = false; // the tile uncovered or not
         bool flag       = false; // the tile has been flag or not
         int  number     = 0;     // records number of bombs around
         int effective = 0; // recods the number of bombs around - flaged tiles around
+        
+        // because pq's top is the greatest element, so when effectice is greater, Tile is smaller
+        bool operator < (const Tile &t){return effective > t.effective;}
+    };
+    
+    const Action_type actions[4] =
+    {
+            LEAVE,
+            UNCOVER,
+            FLAG,
+            UNFLAG,
     };
     
     Tile** board;
+    int flagedMine = 0;
+    int remainCovered = 0;
+    vector<Tile*> innerFrontier;
+    vector<Tile> outerFrontier;
+    
+    void initializeBoard();
+    // update the information we got from the perceived number
+    bool update(int number);
+    
+    // use it when the top of innerFrontier's effective label is 0 or equal the number of
+    // uncoverd neighbors
+    Action thumbsRule(const Tile* t);
+    // return a covered neighbor of (x,y), return NULL if all
+    // neighbors are uncovered
+    vector<Tile*> getBlankNeighbors(const Tile* t);
+    // flag a tile and let the effective label of its neighbor minus 1
+    bool flag(Tile* t);
+    
+    // use it at the beginning to check exit or not
+    bool shouldExit();
+    
+    // random uncover an covered tile
+    Action randomMove(set<Tile*> exception);
 
-    // ======================================================================
-    // YOUR CODE ENDS
-    // ======================================================================
+    
 };
 
 #endif //MINE_SWEEPER_CPP_SHELL_MYAI_HPP
