@@ -52,8 +52,15 @@ private:
         int  number     = 0;     // records number of bombs around
         int effective = 0; // recods the number of bombs around - flaged tiles around
         
+        Tile(int x, int y){
+            this->x = x;
+            this->y = y;
+        }
+        
+        Tile(){}
+        
         // because pq's top is the greatest element, so when effectice is greater, Tile is smaller
-        bool operator < (const Tile &t){return effective > t.effective;}
+        bool operator () (const Tile &t1, const Tile &t2){return t1.effective > t2.effective;}
     };
     
     const Action_type actions[4] =
@@ -64,7 +71,7 @@ private:
             UNFLAG,
     };
     
-    Tile** board;
+    vector<vector<Tile>> board;
     int flagedMine = 0;
     int remainCovered = 0;
     vector<Tile*> innerFrontier;
@@ -76,18 +83,18 @@ private:
     
     // use it when the top of innerFrontier's effective label is 0 or equal the number of
     // uncoverd neighbors
-    Action thumbsRule(const Tile* t);
+    Action thumbsRule(const Tile &t);
     // return a covered neighbor of (x,y), return NULL if all
     // neighbors are uncovered
-    vector<Tile*> getBlankNeighbors(const Tile* t);
+    vector<Tile> getBlankNeighbors(const Tile &t);
     // flag a tile and let the effective label of its neighbor minus 1
-    bool flag(Tile* t);
+    bool flag(const Tile &t);
     
     // use it at the beginning to check exit or not
     bool shouldExit();
     
     // random uncover an covered tile
-    Action randomMove(set<Tile*> exception);
+    Action randomMove(set<Tile, Tile> exception);
 
     
 };

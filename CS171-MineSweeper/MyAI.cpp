@@ -38,12 +38,13 @@ Agent::Action MyAI::getAction( int number )
     if (shouldExit())
         return {LEAVE,-1,-1};
     
-    for (auto it = innerFrontier.begin(); it != innerFrontier.end(); ++it) {
-        Action act = thumbsRule(*it);
+    for (int i = 0; i < innerFrontier.size(); i++) {
+        Action act = thumbsRule(*innerFrontier[i]);
         if (act.action == actions[0])
             continue;
         if (act.action == actions[3]) {
-            innerFrontier.erase(it);
+            innerFrontier.erase(innerFrontier.begin() + i);
+            i--;
             continue;
         }
         agentX = act.x;
@@ -51,21 +52,19 @@ Agent::Action MyAI::getAction( int number )
         return act;
     }
     
-    vector<Tile*> neighbors = getBlankNeighbors(innerFrontier[0]);
+    vector<Tile> neighbors = getBlankNeighbors(*innerFrontier[0]);
     
-    return randomMove(set<Tile*>(neighbors.begin(), neighbors.end()));
+    return randomMove(set<Tile, Tile>(neighbors.begin(), neighbors.end()));
 
 
 }
 
 //initialize board
 void MyAI::initializeBoard(){
-    board = new Tile*[colDimension];
-    for ( int index = 0; index < colDimension; ++index ){
-        board[index] = new Tile[rowDimension];
+    for (int i = 0; i < colDimension; i++) {
+        board.push_back(vector<Tile>());
         for (int j = 0; j < rowDimension; j++) {
-            board[index][j].x = index;
-            board[index][j].y = j;
+            board[i].push_back(Tile(i,j));
         }
     }
 }
@@ -91,29 +90,30 @@ bool MyAI::update(int number){
 // use it when the tile's effective label is 0 or equal the number of
 // uncoverd neighbors, return leave if we can't use thumbsRule
 // return unflag if the tile has no neighbors
-Agent::Action MyAI::thumbsRule(const Tile* t){
-    vector<Tile*> neighbors = getBlankNeighbors(t);
-    if (t->effective == 0){
+Agent::Action MyAI::thumbsRule(const Tile &t){
+    vector<Tile> neighbors = getBlankNeighbors(t);
+    if (t.effective == 0){
         if (!neighbors.empty())
-            return {actions[1], neighbors[0]->x, neighbors[0]->y};
-        return {actions[3], -1, -1};
+            return {UNCOVER, neighbors[0].x, neighbors[0].y};
+        return {UNFLAG, t.x, t.y};
     }
     
-    if (t->effective == neighbors.size()) {
-        for (auto it = neighbors.begin(); it != neighbors.end(); ++it) {
+    if (t.effective == neighbors.size()) {
+        for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
             flag(*it);
-        }
+    
+        return {UNFLAG, t.x, t.y};
     }
     
-    return {actions[0], -1, -1};
+    return {LEAVE, -1, -1};
 }
 
 
 // return a vector of covered and unflaged neighbor of t
-vector<MyAI::Tile*> MyAI::getBlankNeighbors(const Tile* t){
-    vector<Tile*> neighbors;
-    int x = t->x;
-    int y = t->y;
+vector<MyAI::Tile> MyAI::getBlankNeighbors(const Tile &t){
+    vector<Tile> neighbors;
+    int x = t.x;
+    int y = t.y;
     for (int i = x - 1; i < x + 2; i++) {
         if (i < 0 || i >= colDimension)
             continue;
@@ -121,7 +121,7 @@ vector<MyAI::Tile*> MyAI::getBlankNeighbors(const Tile* t){
             if (j < 0 || j >= rowDimension || (i == x && j == y))
                 continue;
             if (!board[i][j].uncovered && !board[i][j].flag)
-                neighbors.push_back(&board[i][j]);
+                neighbors.push_back(board[i][j]);
         }
     }
     
@@ -130,13 +130,15 @@ vector<MyAI::Tile*> MyAI::getBlankNeighbors(const Tile* t){
 
 
 // flag a tile and the effective label of its neighbor minus 1
-bool MyAI::flag(Tile* t){
-    if (t->flag)
+bool MyAI::flag(const Tile &t){
+    if (t.flag)
         return false;
     
-    t->flag = true;
-    int x = t->x;
-    int y = t->y;
+    flagedMine++;
+    int x = t.x;
+    int y = t.y;
+    
+    board[x][y].flag = true;
     for (int i = x - 1; i < x + 2; i++) {
         if (i < 0 || i >= colDimension)
             continue;
@@ -155,10 +157,10 @@ bool MyAI::shouldExit(){
 }
 
 // random uncover an covered tile outside of outerFrontier
-Agent::Action MyAI::randomMove(set<Tile*> exception){
+Agent::Action MyAI::randomMove(set<Tile, Tile> exception){
     for (int i = 0; i < colDimension; i++) {
         for (int j = 0; j < rowDimension; j++) {
-            if (exception.find(&board[i][j]) != exception.end())
+            if (exception.find(board[i][j]) != exception.end())
                 continue;
             agentX = i;
             agentY = j;
