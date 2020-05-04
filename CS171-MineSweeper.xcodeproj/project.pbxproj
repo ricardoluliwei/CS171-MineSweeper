@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8C74D55D245BF4870097BBAC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C74D55C245BF4870097BBAC /* main.cpp */; };
+		8C74D55D245BF4870097BBAC /* Main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C74D55C245BF4870097BBAC /* Main.cpp */; };
 		8C74D56C245BF4D40097BBAC /* MyAI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C74D566245BF4D30097BBAC /* MyAI.cpp */; };
 		8C74D56D245BF4D40097BBAC /* World.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C74D569245BF4D40097BBAC /* World.cpp */; };
 /* End PBXBuildFile section */
@@ -26,7 +26,7 @@
 
 /* Begin PBXFileReference section */
 		8C74D559245BF4870097BBAC /* CS171-MineSweeper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "CS171-MineSweeper"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8C74D55C245BF4870097BBAC /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8C74D55C245BF4870097BBAC /* Main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Main.cpp; sourceTree = "<group>"; };
 		8C74D563245BF4D30097BBAC /* MyAI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MyAI.hpp; sourceTree = "<group>"; };
 		8C74D564245BF4D30097BBAC /* Agent.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Agent.hpp; sourceTree = "<group>"; };
 		8C74D566245BF4D30097BBAC /* MyAI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyAI.cpp; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 				8C74D568245BF4D40097BBAC /* RandomAI.hpp */,
 				8C74D569245BF4D40097BBAC /* World.cpp */,
 				8C74D56A245BF4D40097BBAC /* World.hpp */,
-				8C74D55C245BF4870097BBAC /* main.cpp */,
+				8C74D55C245BF4870097BBAC /* Main.cpp */,
 				8C74D56E245CEFC10097BBAC /* documentation.txt */,
 			);
 			path = "CS171-MineSweeper";
@@ -139,7 +139,7 @@
 			files = (
 				8C74D56C245BF4D40097BBAC /* MyAI.cpp in Sources */,
 				8C74D56D245BF4D40097BBAC /* World.cpp in Sources */,
-				8C74D55D245BF4870097BBAC /* main.cpp in Sources */,
+				8C74D55D245BF4870097BBAC /* Main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
