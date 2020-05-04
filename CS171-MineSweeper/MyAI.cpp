@@ -38,19 +38,9 @@ Agent::Action MyAI::getAction( int number )
     if (shouldExit())
         return {LEAVE,-1,-1};
     
-    for (int i = 0; i < innerFrontier.size(); i++) {
-        Action act = thumbsRule(*innerFrontier[i]);
-        if (act.action == actions[0])
-            continue;
-        if (act.action == actions[3]) {
-            innerFrontier.erase(innerFrontier.begin() + i);
-            i--;
-            continue;
-        }
-        agentX = act.x;
-        agentY = act.y;
+    Action act = thumbsRule();
+    if (act.action != LEAVE)
         return act;
-    }
     
     vector<Tile> neighbors = getBlankNeighbors(*innerFrontier[0]);
     
@@ -77,6 +67,10 @@ bool MyAI::update(int number){
 
     int x = agentX;
     int y = agentY;
+    
+    if (board[x][y].uncovered)
+        return false;
+    
     board[x][y].number = number;
     board[x][y].effective += number;
     board[x][y].uncovered = true;
@@ -90,19 +84,26 @@ bool MyAI::update(int number){
 // use it when the tile's effective label is 0 or equal the number of
 // uncoverd neighbors, return leave if we can't use thumbsRule
 // return unflag if the tile has no neighbors
-Agent::Action MyAI::thumbsRule(const Tile &t){
-    vector<Tile> neighbors = getBlankNeighbors(t);
-    if (t.effective == 0){
-        if (!neighbors.empty())
-            return {UNCOVER, neighbors[0].x, neighbors[0].y};
-        return {UNFLAG, t.x, t.y};
-    }
-    
-    if (t.effective == neighbors.size()) {
-        for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
-            flag(*it);
-    
-        return {UNFLAG, t.x, t.y};
+Agent::Action MyAI::thumbsRule(){
+    for (int i = 0; i < innerFrontier.size(); i++) {
+        Tile* temp = innerFrontier[i];
+        vector<Tile> neighbors = getBlankNeighbors(*temp);
+        if (temp->effective == 0){
+            if (!neighbors.empty()){
+                agentX = neighbors[0].x;
+                agentY = neighbors[0].y;
+                return {UNCOVER, agentX, agentY};
+            }
+            innerFrontier.erase(innerFrontier.begin() + i);
+            return thumbsRule();
+        }
+        
+        if (temp->effective == neighbors.size()) {
+            for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
+                flag(*it);
+            innerFrontier.erase(innerFrontier.begin() + i);
+            return thumbsRule();
+        }
     }
     
     return {LEAVE, -1, -1};
@@ -164,7 +165,7 @@ Agent::Action MyAI::randomMove(set<Tile, Tile> exception){
                 continue;
             agentX = i;
             agentY = j;
-            return {actions[1], i, j};
+            return {actions[1], agentX, agentY};
         }
     }
     

@@ -83,7 +83,7 @@ private:
     
     // use it when the top of innerFrontier's effective label is 0 or equal the number of
     // uncoverd neighbors
-    Action thumbsRule(const Tile &t);
+    Action thumbsRule();
     // return a covered neighbor of (x,y), return NULL if all
     // neighbors are uncovered
     vector<Tile> getBlankNeighbors(const Tile &t);
