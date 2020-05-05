@@ -41,12 +41,8 @@ Agent::Action MyAI::getAction( int number )
     Action act = thumbsRule();
     if (act.action != LEAVE)
         return act;
-    
-    vector<Tile> neighbors = getBlankNeighbors(*innerFrontier[0]);
-    
-    return randomMove(set<Tile, Tile>(neighbors.begin(), neighbors.end()));
 
-
+    return randomMove();
 }
 
 //initialize board
@@ -158,7 +154,13 @@ bool MyAI::shouldExit(){
 }
 
 // random uncover an covered tile outside of outerFrontier
-Agent::Action MyAI::randomMove(set<Tile, Tile> exception){
+Agent::Action MyAI::randomMove(){
+    set<Tile, Tile> exception;
+    for (auto it = innerFrontier.begin(); it != innerFrontier.end(); ++it) {
+        vector<Tile> neighbors = getBlankNeighbors(*(*it));
+        exception.insert(neighbors.begin(), neighbors.end());
+    }
+    
     for (int i = 0; i < colDimension; i++) {
         for (int j = 0; j < rowDimension; j++) {
             if (exception.find(board[i][j]) != exception.end())

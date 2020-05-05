@@ -94,9 +94,7 @@ private:
     bool shouldExit();
     
     // random uncover an covered tile
-    Action randomMove(set<Tile, Tile> exception);
-
-    
+    Action randomMove();    
 };
 
 #endif //MINE_SWEEPER_CPP_SHELL_MYAI_HPP
