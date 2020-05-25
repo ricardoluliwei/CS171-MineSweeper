@@ -246,7 +246,7 @@ int main( int argc, char *argv[] ){
     for (int i = 0; i < totalTest; i++)
         if (mainf(argc, argv))
             success++;
-    
-    cout << "Percentage: " << success * 100 / totalTest << "%" << endl;
+    cout << "Total test case: " << totalTest << endl;
+    cout << "Win rate: " << success * 100 / totalTest << "%" << endl;
     
 }

@@ -155,6 +155,7 @@ bool MyAI::shouldExit(){
 
 // random uncover an covered tile outside of outerFrontier
 Agent::Action MyAI::randomMove(){
+    std::cout<<"ramdon"<<std::endl;
     set<Tile, Tile> exception;
     for (auto it = innerFrontier.begin(); it != innerFrontier.end(); ++it) {
         vector<Tile> neighbors = getBlankNeighbors(*(*it));
@@ -165,11 +166,25 @@ Agent::Action MyAI::randomMove(){
         for (int j = 0; j < rowDimension; j++) {
             if (exception.find(board[i][j]) != exception.end())
                 continue;
+            if (board[i][j].flag || board[i][j].uncovered)
+                continue;
             agentX = i;
             agentY = j;
+            cout << "first" << endl;
             return {actions[1], agentX, agentY};
         }
     }
+    
+    for (int i = 0; i < colDimension; i++) {
+           for (int j = 0; j < rowDimension; j++) {
+               if (board[i][j].flag || board[i][j].uncovered)
+                   continue;
+               agentX = i;
+               agentY = j;
+               cout << "second" << endl;
+               return {actions[1], agentX, agentY};
+           }
+       }
     
     return {actions[0], -1, -1};
 }
