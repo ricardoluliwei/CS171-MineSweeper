@@ -241,7 +241,7 @@ int main( int argc, char *argv[] ){
     // Set random seed
     srand( time ( NULL ) );
     
-    int totalTest = 10000;
+    int totalTest = 1000;
     double success = 0;
     for (int i = 0; i < totalTest; i++)
         if (mainf(argc, argv))
