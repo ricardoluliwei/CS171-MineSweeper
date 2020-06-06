@@ -74,8 +74,8 @@ private:
     vector<vector<Tile>> board;
     int flagedMine = 0;
     int remainCovered = 0;
-    vector<Tile*> innerFrontier;
-    vector<Tile> outerFrontier;
+    vector<Tile*> uncoveredFrontier;
+    vector<Tile> coveredFrontier;
     
     void initializeBoard();
     // update the information we got from the perceived number

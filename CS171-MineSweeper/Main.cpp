@@ -12,11 +12,11 @@
 //
 // NOTES:       - Syntax:
 //
-//                	Minesweeper [Options] [InputFile] [OutputFile]
+//                    Minesweeper [Options] [InputFile] [OutputFile]
 //
 //                  Options:
-//						-m Use the ManualAI instead of MyAI.
-//						-r Use the RandomAI instead of MyAI.
+//                        -m Use the ManualAI instead of MyAI.
+//                        -r Use the RandomAI instead of MyAI.
 //                      -d Debug mode, which displays the game board
 //                         after every mode. Useless with -m.
 //                      -v Verbose mode displays world file names before
@@ -68,13 +68,13 @@ int mainf( int argc, char *argv[] )
     }
 
     // Important Variables
-    bool 	debug        = false;
-    bool	verbose      = false;
+    bool     debug        = false;
+    bool    verbose      = false;
     string  aiType       = "MyAI";
-    bool 	folder       = false;
-    string	worldFile    = "";
-    string	outputFile   = "";
-    string 	firstToken 	 = argv[1];
+    bool     folder       = false;
+    string    worldFile    = "";
+    string    outputFile   = "";
+    string     firstToken      = argv[1];
 
     // read options if there are options
     if ( firstToken[0] == '-' )

@@ -72,7 +72,12 @@ bool MyAI::update(int number){
     board[x][y].uncovered = true;
     remainCovered--;
     
-    innerFrontier.push_back(&board[x][y]);
+    vector<Tile> neighbors = getBlankNeighbors(board[x][y]);
+    
+    if (neighbors.empty())
+        return true;
+    
+    uncoveredFrontier.push_back(&board[x][y]);
     
     return true;
 }
@@ -81,8 +86,8 @@ bool MyAI::update(int number){
 // uncoverd neighbors, return leave if we can't use thumbsRule
 // return unflag if the tile has no neighbors
 Agent::Action MyAI::thumbsRule(){
-    for (int i = 0; i < innerFrontier.size(); i++) {
-        Tile* temp = innerFrontier[i];
+    for (int i = 0; i < uncoveredFrontier.size(); i++) {
+        Tile* temp = uncoveredFrontier[i];
         vector<Tile> neighbors = getBlankNeighbors(*temp);
         if (temp->effective == 0){
             if (!neighbors.empty()){
@@ -90,14 +95,14 @@ Agent::Action MyAI::thumbsRule(){
                 agentY = neighbors[0].y;
                 return {UNCOVER, agentX, agentY};
             }
-            innerFrontier.erase(innerFrontier.begin() + i);
+            uncoveredFrontier.erase(uncoveredFrontier.begin() + i);
             return thumbsRule();
         }
         
         if (temp->effective == neighbors.size()) {
             for (auto it = neighbors.begin(); it != neighbors.end(); ++it)
                 flag(*it);
-            innerFrontier.erase(innerFrontier.begin() + i);
+            uncoveredFrontier.erase(uncoveredFrontier.begin() + i);
             return thumbsRule();
         }
     }
@@ -155,9 +160,8 @@ bool MyAI::shouldExit(){
 
 // random uncover an covered tile outside of outerFrontier
 Agent::Action MyAI::randomMove(){
-    //std::cout<<"ramdon"<<std::endl;
     set<Tile, Tile> exception;
-    for (auto it = innerFrontier.begin(); it != innerFrontier.end(); ++it) {
+    for (auto it = uncoveredFrontier.begin(); it != uncoveredFrontier.end(); ++it) {
         vector<Tile> neighbors = getBlankNeighbors(*(*it));
         exception.insert(neighbors.begin(), neighbors.end());
     }
@@ -170,7 +174,6 @@ Agent::Action MyAI::randomMove(){
                 continue;
             agentX = i;
             agentY = j;
-            //cout << "first" << endl;
             return {actions[1], agentX, agentY};
         }
     }
@@ -181,7 +184,6 @@ Agent::Action MyAI::randomMove(){
                    continue;
                agentX = i;
                agentY = j;
-               //cout << "second" << endl;
                return {actions[1], agentX, agentY};
            }
        }
