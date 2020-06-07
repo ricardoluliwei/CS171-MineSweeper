@@ -1,7 +1,7 @@
 // ======================================================================
 // FILE:        MyAI.hpp
 //
-// AUTHOR:      Jian Li
+// AUTHOR:      Liwei Lu, Xinyi Ai
 //
 // DESCRIPTION: This file contains your agent class, which you will
 //              implement. You are responsible for implementing the
@@ -24,7 +24,7 @@
 #include <iostream> // temporary use
 #include <vector>
 #include <map>
-#include <set>
+#include <unordered_set>
 #include <algorithm>
 #include <queue>
 #include <cstdlib>
@@ -59,8 +59,22 @@ private:
         
         Tile(){}
         
-        // because pq's top is the greatest element, so when effectice is greater, Tile is smaller
-        bool operator () (const Tile &t1, const Tile &t2){return t1.effective > t2.effective;}
+        bool operator==(const Tile& t) const
+        {
+            return (this->x * 1000 + y == t.x * 1000 + y);
+        }
+    };
+    
+    class modelCheckingNode{
+    public:
+        
+    };
+    
+    class TileHashFunction{
+    public:
+        size_t operator () (const Tile &t) const{
+            return t.x * 1000 + t.y;
+        }
     };
     
     const Action_type actions[4] =
@@ -94,7 +108,14 @@ private:
     bool shouldExit();
     
     // random uncover an covered tile
-    Action randomMove();    
+    Action randomMove();
+    
+    // model checking function
+    void modelChecking(unsigned &totalModels, vector<int> coveredFrontier, vector<Tile> unassignedTile, vector<unsigned> &minePossibility);
+    
+    Tile getNextModelTile(const vector<int> &coveredFrontier, const vector<Tile> &unassignedTile);
+    
+    
 };
 
 #endif //MINE_SWEEPER_CPP_SHELL_MYAI_HPP

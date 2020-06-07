@@ -1,7 +1,7 @@
 // ======================================================================
 // FILE:        MyAI.cpp
 //
-// AUTHOR:      Jian Li
+// AUTHOR:      Liwei Lu, Xinyi Ai
 //
 // DESCRIPTION: This file contains your agent class, which you will
 //              implement. You are responsible for implementing the
@@ -160,12 +160,12 @@ bool MyAI::shouldExit(){
 
 // random uncover an covered tile outside of outerFrontier
 Agent::Action MyAI::randomMove(){
-    set<Tile, Tile> exception;
+    unordered_set<Tile, TileHashFunction> exception;
     for (auto it = uncoveredFrontier.begin(); it != uncoveredFrontier.end(); ++it) {
         vector<Tile> neighbors = getBlankNeighbors(*(*it));
         exception.insert(neighbors.begin(), neighbors.end());
     }
-    
+
     for (int i = 0; i < colDimension; i++) {
         for (int j = 0; j < rowDimension; j++) {
             if (exception.find(board[i][j]) != exception.end())
