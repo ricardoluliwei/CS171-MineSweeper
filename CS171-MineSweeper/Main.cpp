@@ -51,20 +51,20 @@
 
 using namespace std;
 
-int mainf( int argc, char *argv[] )
+int main( int argc, char *argv[] )
 {
+
+    // Set random seed
+    srand( time ( NULL ) );
 
     if ( argc == 1 ){
         World world(false, std::string(), std::string());
         int score = world.run();
-        if (score){
-            return 1;
-            //cout << "WORLD COMPLETE" << endl;
-        }
-        else{
-            return 0;
-            //cout <<  "WORLD INCOMPLETE" << endl;
-        }
+        if (score)
+            cout << "WORLD COMPLETE" << endl;
+        else
+            cout <<  "WORLD INCOMPLETE" << endl;
+        return 0;
     }
 
     // Important Variables
@@ -235,18 +235,4 @@ int mainf( int argc, char *argv[] )
         cout << "[ERROR] Failure to open file." << endl;
     }
     return 0;
-}
-
-int main( int argc, char *argv[] ){
-    // Set random seed
-    srand( time ( NULL ) );
-    
-    int totalTest = 10;
-    double success = 0;
-    for (int i = 0; i < totalTest; i++)
-        if (mainf(argc, argv))
-            success++;
-    cout << "Total test case: " << totalTest << endl;
-    cout << "Win rate: " << success * 100 / totalTest << "%" << endl;
-    
 }
