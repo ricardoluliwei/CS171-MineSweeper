@@ -1,8 +1,0 @@
-MyAI:
-struct Tile:
-position index
-bool flag
-int number
-int effective
-vector uncoverNeighbor (remove flaged neighbor form this)
-
